@@ -1,0 +1,96 @@
+<div class="editor-instructions">
+  <ng-container [ngSwitch]="instructionStep">
+    <ng-template [ngSwitchCase]="getInsructionStep().ListInstructions">
+      <button
+        class="editor-instructions__btn"
+        mat-raised-button
+        color="primary"
+        type="button"
+        (click)="addInstruction()"
+      >
+        Добавить инструкцию
+      </button>
+      <div
+        class="editor-instructions__wrapper-instructions"
+        [ngClass]="{
+          'editor-instructions__wrapper-instructions_empty': !instructions.length
+        }"
+      >
+        <ng-container *ngIf="instructions.length; else emptyInstruction">
+          <table class="editor-instructions__table">
+            <thead>
+              <tr class="editor-instructions__row">
+                <th class="editor-instructions__column editor-instructions__column-time">id</th>
+                <th class="editor-instructions__column editor-instructions__column-time">
+                  Заголовок
+                </th>
+                <th class="editor-instructions__column editor-instructions__column-action">
+                  Действия
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="item" *ngFor="let instruction of instructions; let i = index">
+                <td class="editor-instructions__column editor-instructions__column-time">
+                  {{ instruction.index! + 1 }}
+                </td>
+                <td class="editor-instructions__column editor-instructions__column-time">
+                  {{ instruction.title }}
+                </td>
+                <td class="editor-instructions__column editor-instructions__column-action">
+                  <button
+                    mat-icon-button
+                    matTooltip="Редактировать инструкцию"
+                    matTooltipPosition="above"
+                    matTooltipClass="tooltip"
+                    (click)="editInstruction(instruction)"
+                  >
+                    <img
+                      class="editor-instructions__btn-icon"
+                      src="assets/svg/edit.svg"
+                      alt="редактировать"
+                    />
+                  </button>
+                  <button
+                    mat-icon-button
+                    matTooltip="Удалить инструкцию"
+                    matTooltipPosition="above"
+                    matTooltipClass="tooltip"
+                    (click)="deleteInstruction(instruction)"
+                  >
+                    <img
+                      class="editor-instructions__btn-icon"
+                      src="assets/svg/delete.svg"
+                      alt="удалить"
+                    />
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </ng-container>
+        <ng-template #emptyInstruction>
+          <p class="editor-instructions__notify">Список инструкций пуст</p>
+        </ng-template>
+      </div>
+    </ng-template>
+    <ng-template [ngSwitchCase]="getInsructionStep().Instruction">
+      <app-instruction
+        [instruction]="currentInstruction"
+        (saveInstruction)="saveInstruction($event)"
+        (backToInstructions)="backToInstructions()"
+        (addStep)="addStep()"
+        (editStep)="editStep($event)"
+        (deleteStep)="deleteStep($event)"
+      ></app-instruction>
+    </ng-template>
+    <ng-template [ngSwitchCase]="getInsructionStep().Step">
+      <app-step-action
+        [step]="currentInstructionStep"
+        (saveStep)="saveStep($event)"
+        (backToSteps)="backToSteps()"
+        (deleteAction)="deleteAction($event)"
+      ></app-step-action>
+    </ng-template>
+  </ng-container>
+</div>

@@ -1,0 +1,163 @@
+<div class="toolbar">
+  <div class="toolbar__container">
+    <div
+      class="toolbar__btn"
+      matTooltip="Сброс камеры"
+      matTooltipPosition="above"
+      matTooltipClass="tooltip"
+    >
+      <app-viewer-button
+        [iconPath]="'assets/svg/home.svg'"
+        [buttonName]="'Сброс камеры'"
+        (btnClicked)="resetCamera()"
+      ></app-viewer-button>
+    </div>
+    <div
+      class="toolbar__btn"
+      matTooltip="Облет модели"
+      matTooltipPosition="above"
+      matTooltipClass="tooltip"
+    >
+      <app-viewer-button
+        [isActive]="rotateAnimationBtnIsActive()"
+        [iconPath]="'assets/svg/rotationCamera.svg'"
+        [iconActivePath]="'assets/svg/rotationCameraActive.svg'"
+        [buttonName]="'Облёт модели'"
+        (btnClicked)="rotateCamera()"
+      >
+      </app-viewer-button>
+      <div class="toolbar__panel" [hidden]="!rotateAnimationBtnIsActive()">
+        <mat-slider
+          [min]="rotateAnimationSliderMinValue"
+          [max]="rotateAnimationSliderMaxValue"
+          [step]="rotateAnimationSliderStep"
+          [value]="rotateAnimationSliderValue"
+          (input)="rotateCameraSpeedChanged.emit($event.value!)"
+        ></mat-slider>
+      </div>
+    </div>
+    <div
+      class="toolbar__btn"
+      matTooltip="Разнесение модели"
+      matTooltipPosition="above"
+      matTooltipClass="tooltip"
+    >
+      <app-viewer-button
+        [isActive]="explodeBtnIsActive()"
+        [iconPath]="'assets/svg/explode.svg'"
+        [iconActivePath]="'assets/svg/explodeActive.svg'"
+        [buttonName]="'Разнесение модели'"
+        (btnClicked)="explode()"
+      ></app-viewer-button>
+      <div class="toolbar__panel" [hidden]="!explodeBtnIsActive()">
+        <mat-slider
+          [min]="explodeSliderMinValue"
+          [max]="explodeSliderMaxValue"
+          [step]="explodeSliderStep"
+          [value]="explodeSliderValue"
+          (input)="explodePowerChanged.emit($event.value!)"
+        ></mat-slider>
+      </div>
+    </div>
+    <div
+      class="toolbar__btn"
+      matTooltip="Разрез модели"
+      matTooltipPosition="above"
+      matTooltipClass="tooltip"
+    >
+      <app-viewer-button
+        [isActive]="cutModelBtnIsActive()"
+        [iconPath]="'assets/svg/cutModel.svg'"
+        [iconActivePath]="'assets/svg/cutModelActive.svg'"
+        [buttonName]="'Разрезать модель'"
+        (btnClicked)="cutModel()"
+      ></app-viewer-button>
+      <div class="toolbar__panel" [hidden]="!cutModelBtnIsActive()">
+        <mat-radio-group [ngModel]="currentPlane" (ngModelChange)="changePlane($event)">
+          <div class="toolbar__row-plane">
+            <mat-radio-button color="primary" [value]="0">YZ</mat-radio-button>
+            <div class="toolbar__wrapper-slider">
+              <mat-slider
+                color="primary"
+                [min]="0"
+                [max]="1"
+                [step]="0.01"
+                [disabled]="currentPlane !== 0"
+                [ngModel]="this.sections[0].value"
+                (ngModelChange)="changeConstantSection.emit({ value: $event, index: 0 })"
+                (input)="moveSectionYZ.emit($event.value!)"
+              ></mat-slider>
+            </div>
+            <div class="toolbar__text">
+              <mat-checkbox
+                color="primary"
+                [disabled]="currentPlane !== 0"
+                (change)="changeInvertSection.emit({ checked: $event.checked, index: 0 })"
+                >Инвертировать</mat-checkbox
+              >
+            </div>
+          </div>
+          <div class="toolbar__row-plane">
+            <mat-radio-button color="primary" [value]="1">XZ</mat-radio-button>
+            <div class="toolbar__wrapper-slider">
+              <mat-slider
+                color="primary"
+                [min]="0"
+                [max]="1"
+                [step]="0.01"
+                [disabled]="currentPlane !== 1"
+                [ngModel]="this.sections[1].value"
+                (ngModelChange)="changeConstantSection.emit({ value: $event, index: 1 })"
+                (input)="moveSectionXZ.emit($event.value!)"
+              ></mat-slider>
+            </div>
+            <div class="toolbar__text">
+              <mat-checkbox
+                color="primary"
+                [disabled]="currentPlane !== 1"
+                (change)="changeInvertSection.emit({ checked: $event.checked, index: 1 })"
+                >Инвертировать</mat-checkbox
+              >
+            </div>
+          </div>
+          <div class="toolbar__row-plane">
+            <mat-radio-button color="primary" [value]="2">XY</mat-radio-button>
+            <div class="toolbar__wrapper-slider">
+              <mat-slider
+                color="primary"
+                [min]="0"
+                [max]="1"
+                [step]="0.01"
+                [disabled]="currentPlane !== 2"
+                [ngModel]="this.sections[2].value"
+                (ngModelChange)="changeConstantSection.emit({ value: $event, index: 2 })"
+                (input)="moveSectionXY.emit($event.value!)"
+              ></mat-slider>
+            </div>
+            <div class="toolbar__text">
+              <mat-checkbox
+                color="primary"
+                [disabled]="currentPlane !== 2"
+                (change)="changeInvertSection.emit({ checked: $event.checked, index: 2 })"
+                >Инвертировать</mat-checkbox
+              >
+            </div>
+          </div>
+        </mat-radio-group>
+      </div>
+    </div>
+    <div
+      class="toolbar__btn"
+      [matTooltip]="viewMode ? 'Скрыть аннотации' : 'Отобразить аннотации'"
+      matTooltipPosition="above"
+      matTooltipClass="tooltip"
+      *ngIf="router.url.startsWith('/repository')"
+    >
+      <app-viewer-button
+        [iconPath]="'assets/svg/viewMode.svg'"
+        [buttonName]="viewMode ? 'Скрытие аннотаций' : 'Отображение аннотации'"
+        (btnClicked)="hideAnnotation()"
+      ></app-viewer-button>
+    </div>
+  </div>
+</div>

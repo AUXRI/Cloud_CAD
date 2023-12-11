@@ -1,0 +1,11 @@
+<div>
+  <!-- TODO: Верстка на пользователя / команду -->
+  <ng-container *ngIf="repositories.length">
+    <app-repositories-page
+      [repositories]="repositories"
+      [title]="'Публичные репозитории'"
+    ></app-repositories-page>
+  </ng-container>
+  
+  <!-- TODO: Заглушка если нет репозиториев -->
+</div>

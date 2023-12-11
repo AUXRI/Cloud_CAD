@@ -1,0 +1,39 @@
+@import '_variables';
+
+.dialog {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+}
+
+.choose-image {
+  &__crop-wrapper {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 15px;
+  }
+
+  &__crop-result {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    margin-left: 30px;
+  }
+
+  &__result-image {
+    border-radius: 50%;
+    object-fit: cover;
+    display: block;
+
+    &_small {
+      margin-top: 30px;
+    }
+
+    &_square {
+      border-radius: 0;
+    }
+  }
+}

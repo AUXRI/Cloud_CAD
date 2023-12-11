@@ -1,0 +1,94 @@
+<div *ngIf="!showError; else loadingError" class="viewer-wrapper" #viewerWrapper>
+  <ng-container *ngIf="viewerInitialized">
+    <app-viewer-toolbar
+      [activeBtnIndex]="activeBtnIndex"
+      [rotateAnimationSliderValue]="rotateSpeedValue"
+      [explodeSliderValue]="explodePowerValue"
+      [sections]="sections"
+      [currentPlane]="currentPlane"
+      [viewMode]="viewMode"
+      (viewerBtnClicked)="onViewerBtnClicked($event)"
+      (rotateCameraSpeedChanged)="onRotateCameraSpeedChanged($event)"
+      (explodePowerChanged)="onExplodePowerChanged($event)"
+      (moveSectionYZ)="moveYZ($event)"
+      (moveSectionXZ)="moveXZ($event)"
+      (moveSectionXY)="moveXY($event)"
+      (changeInvertSection)="changeInvertPlane($event)"
+      (createPlane)="createSectionPlane($event)"
+      (changeConstantSection)="changeConstantSection($event)"
+    ></app-viewer-toolbar>
+    <app-view-cube></app-view-cube>
+  </ng-container>
+  <canvas
+    #canvas
+    [ngStyle]="{ width: '100%', height: '100%', position: 'absolute' }"
+    (click)="onMouseClick($event)"
+    (mouseup)="onMouseUp($event)"
+    (mousedown)="onMouseDown($event)"
+    (mousemove)="setMouseCoords($event)"
+    (contextmenu)="onRightClick($event)"
+  ></canvas>
+  <div
+    style="visibility: hidden; position: fixed"
+    [ngStyle]="{ top: contextMenuPosition.y, left: contextMenuPosition.x }"
+    [matMenuTriggerFor]="rightMenu"
+  ></div>
+  <mat-menu class="context-menu" #rightMenu="matMenu" [hasBackdrop]="false">
+    <div #viewerContextMenuInner>
+      <ng-template matMenuContent>
+        <button
+          mat-menu-item
+          class="context-menu__btn"
+          (click)="onViewerBtnClicked(getViewerButtonsEnum().RestoreView)"
+        >
+          <img class="context-menu__btn-icon" src="assets/svg/reset.svg" alt="восстановить вид" />
+          <span class="context-menu__btn-text">Восстановить вид</span>
+        </button>
+        <button
+          mat-menu-item
+          class="context-menu__btn"
+          [hidden]="sceneService.selectedObj"
+          [disabled]="!sceneService.selectedObj"
+          (click)="onViewerBtnClicked(getViewerButtonsEnum().Hide)"
+        >
+          <img
+            class="context-menu__btn-icon"
+            src="assets/svg/visibility_off.svg"
+            alt="скрыть элемент"
+          />
+          <span class="context-menu__btn-text">Скрыть элемент</span>
+        </button>
+        <button
+          mat-menu-item
+          class="context-menu__btn"
+          [hidden]="sceneService.selectedObj"
+          [disabled]="!sceneService.selectedObj"
+          (click)="onViewerBtnClicked(getViewerButtonsEnum().Isolate)"
+        >
+          <img class="context-menu__btn-icon" src="assets/svg/reset.svg" alt="изолировать" />
+          <span class="context-menu__btn-text">Изолировать</span>
+        </button>
+        <button
+          mat-menu-item
+          class="context-menu__btn"
+          [hidden]="sceneService.selectedObj"
+          [disabled]="!sceneService.selectedObj"
+          (click)="onViewerBtnClicked(getViewerButtonsEnum().AddAnnotation)"
+        >
+          <img
+            class="context-menu__btn-icon"
+            src="assets/svg/attachAnnotation.svg"
+            alt="прикрепить аннотацию"
+          />
+          <span class="context-menu__btn-text">Прикрепить аннотацию</span>
+        </button>
+      </ng-template>
+    </div>
+  </mat-menu>
+</div>
+
+<ng-template #loadingError>
+  <div class="loading-error">
+    Модель отсутствует
+  </div>
+</ng-template>

@@ -1,0 +1,106 @@
+<div class="annotations-editor">
+  <div class="annotations-editor__new-annotation new-annotation-panel">
+    <p class="new-annotation-panel__title">Заголовок аннотации</p>
+    <input class="new-annotation-panel__input" [(ngModel)]="currentAnnotation.title" />
+    <p class="new-annotation-panel__title">Текст аннотации</p>
+    <div class="new-annotation-panel__content">
+      <textarea
+        [(ngModel)]="currentAnnotation.text"
+        class="new-annotation-panel__text-annotation"
+      ></textarea>
+      <div class="new-annotation-panel__actions">
+        <div class="new-annotation-panel__btn-wrapper" #buttonApplyAnnotation>
+          <button
+            mat-icon-button
+            class="new-annotation-panel__btn"
+            (click)="applyAnnotation.emit(true)"
+            matTooltip="Прикрепить аннотацию"
+            matTooltipPosition="above"
+            matTooltipClass="tooltip"
+          >
+            <img
+              class="new-annotation-panel__btn-icon"
+              src="assets/svg/attachAnnotation.svg"
+              alt="прикрепить"
+            />
+          </button>
+        </div>
+        <div [hidden]="!currentAnnotation.position">
+          <button
+            mat-icon-button
+            class="new-annotation-panel__btn"
+            [disabled]="!currentAnnotation.position"
+            (click)="
+              onSaveAnnotation(editedAnnotation, currentAnnotation.text, currentAnnotation.title)
+            "
+            matTooltip="Сохранить аннотацию"
+            matTooltipPosition="above"
+            matTooltipClass="tooltip"
+          >
+            <img class="new-annotation-panel__btn-icon" src="assets/svg/save.svg" alt="сохранить" />
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="annotations-editor__table-block" *ngIf="annotations.length">
+    <p class="new-annotation-panel__title">Список аннотаций</p>
+    <div class="annotations-editor__table-wrapper">
+      <table class="annotations-editor__table">
+        <thead>
+          <tr class="annotations-editor__row">
+            <th class="annotations-editor__column annotations-editor__number-column">Заголовок</th>
+            <th class="annotations-editor__column annotations-editor__description-column">
+              Описание
+            </th>
+            <th class="annotations-editor__column annotations-editor__actions-column">Действия</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            class="item"
+            *ngFor="let annotation of annotations"
+            (click)="sceneService.showAnnotationDesciption(annotation)"
+          >
+            <td class="annotations-editor__column annotations-editor__number-column">
+              {{ annotation.title }}
+            </td>
+            <td class="annotations-editor__column annotations-editor__description-column">
+              {{ annotation.description }}
+            </td>
+            <td class="annotations-editor__column annotations-editor__actions-column">
+              <button
+                mat-icon-button
+                class="annotations-editor__btn"
+                matTooltip="Редактировать аннотацию"
+                matTooltipPosition="above"
+                matTooltipClass="tooltip"
+                (click)="editAnnotation($event, annotation)"
+              >
+                <img
+                  class="annotations-editor__btn-icon"
+                  src="assets/svg/edit.svg"
+                  alt="редактировать"
+                />
+              </button>
+              <button
+                mat-icon-button
+                class="annotations-editor__btn"
+                matTooltip="Удалить аннотацию"
+                matTooltipPosition="above"
+                matTooltipClass="tooltip"
+                (click)="deleteAnnotation.emit(annotation)"
+              >
+                <img
+                  class="annotations-editor__btn-icon"
+                  src="assets/svg/delete.svg"
+                  alt="удалить"
+                />
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

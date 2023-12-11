@@ -1,0 +1,110 @@
+<div class="init-repository">
+  <form class="init-repository__form form" [formGroup]="repositoryGroup">
+    <div class="init-repository__header">
+      <div class="init-repository__header-left-column">
+        <div class="form__field">
+          <label class="form__label" for="name">Название</label>
+          <div class="form__control-wrapper form__control-wrapper_w-60">
+            <input
+              class="form__input"
+              placeholder="Название репозитория"
+              id="name"
+              formControlName="title"
+            />
+          </div>
+        </div>
+        <div class="form__field">
+          <label class="form__label" for="author">Автор</label>
+          <div class="form__control-wrapper">
+            <select
+              class="init-repository__form-select form__select"
+              id="author"
+              formControlName="author"
+            >
+              <option [value]="dataStore.getUserValue()?._id">
+                {{ dataStore.getUserValue()?.login }}
+              </option>
+              <option [value]="team._id" *ngFor="let team of userTeams">
+                {{ team.title }}
+              </option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="init-repository__header-right-column">
+        <div class="init-repository__avatar-container edit-avatar">
+          <img
+            class="init-repository__avatar edit-avatar__img"
+            [src]="repositoryPreview || 'assets/svg/repository.svg'"
+            alt="аватар"
+          />
+          <button
+            class="init-repository__pfp-button edit-avatar__pfp-button"
+            type="button"
+            (click)="openDialogChooseImage()"
+          >
+            <img
+              class="init-repository__select-avatar edit-avatar__select-avatar"
+              src="assets/svg/edit_white.svg"
+              alt="изменить аватар"
+            />
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="form__field">
+      <label class="form__label" for="description">Описание</label>
+      <div class="form__control-wrapper">
+        <textarea
+          class="form__textarea"
+          placeholder="Описание репозитория"
+          id="description"
+          formControlName="description"
+        ></textarea>
+      </div>
+    </div>
+    <div class="form__field">
+      <div class="init-repository__type">
+        <div class="init-repository__type-input-wrapper">
+          <input type="radio" id="public" [value]="getType().Public" formControlName="type" />
+          <label class="init-repository__type-label" for="public">
+            <img
+              class="init-repository__type-img"
+              src="assets/svg/publicRepository.svg"
+              alt="Публичный"
+            />
+          </label>
+        </div>
+        <div class="init-repository__type-description">
+          <p class="init-repository__type-title">Публичный</p>
+          <p class="init-repository__type-text">
+            Репозиторий будет доступен всем пользователям для просмотра.
+          </p>
+        </div>
+      </div>
+      <div class="init-repository__type">
+        <div class="init-repository__type-input-wrapper">
+          <input type="radio" id="private" [value]="getType().Private" formControlName="type" />
+          <label class="init-repository__type-label" for="private">
+            <img
+              class="init-repository__type-img"
+              src="assets/svg/privateRepository.svg"
+              alt="Приватный"
+            />
+          </label>
+        </div>
+        <div class="init-repository__type-description">
+          <p class="init-repository__type-title">Приватный</p>
+          <p class="init-repository__type-text">
+            Репозиторий будет доступен только автору и участникам репозитория.
+          </p>
+        </div>
+      </div>
+    </div>
+    <app-step-buttons
+      [step]="step"
+      [nextBtnText]="editMode ? 'Сохранить' : 'Далее'"
+      (buttonClick)="editMode ? update() : create($event)"
+    ></app-step-buttons>
+  </form>
+</div>

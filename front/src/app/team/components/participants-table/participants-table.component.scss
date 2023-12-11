@@ -1,0 +1,35 @@
+@import '_variables';
+@import 'form';
+
+.participants {
+  overflow: auto;
+  max-height: 384px;
+  max-width: 100%;
+  margin-top: 15px;
+}
+
+.participants-table {
+  width: 100%;
+
+  &__participant-avatar {
+    width: 32px;
+    height: 32px;
+    margin-right: 5px;
+  }
+
+  &__participant-nickname {
+  }
+
+  &__select {
+    width: 75%;
+    padding: 6px 10px;
+    border: 1px solid $primaryBlueGreyColor;
+    border-radius: 8px;
+    line-height: 20px;
+  }
+}
+
+.title {
+  font-weight: 700;
+  margin-top: 20px;
+}

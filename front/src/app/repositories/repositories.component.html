@@ -1,0 +1,126 @@
+<div class="repositories">
+  <div class="repositories__list">
+    <a
+      class="repository"
+      *ngFor="let repository of repositories"
+      [routerLink]="'/repository/' + repository._id"
+    >
+      <img
+        class="repository__image"
+        appImageSanitized
+        [imagePath]="repository.preview || ''"
+        [defaultImage]="'assets/svg/repositoryPreview.svg'"
+        [alt]="'Репозиторий ' + repository.title"
+      />
+      <div class="repository__content">
+        <div class="repository__header">
+          <div class="repository__title-wrapper">
+            <img
+              class="repository__type"
+              [src]="
+                repository.type === getRepositoryTypeEnum().Public
+                  ? 'assets/svg/publicRepository.svg'
+                  : 'assets/svg/privateRepository.svg'
+              "
+              [alt]="repository.type === getRepositoryTypeEnum().Public ? 'Публичный' : 'Приватный'"
+              [matTooltip]="
+                repository.type === getRepositoryTypeEnum().Public
+                  ? 'Публичный репозиторий'
+                  : 'Приватный репозиторий'
+              "
+              matTooltipPosition="above"
+              matTooltipClass="tooltip"
+            />
+            <h2 class="repository__title">{{ repository.title }}</h2>
+          </div>
+          <div class="repository__dates">
+            <div
+              class="repository__date"
+              matTooltip="Дата изменения"
+              matTooltipPosition="above"
+              matTooltipClass="tooltip"
+            >
+              <img
+                class="repository__date-img"
+                src="assets/svg/dateEdit.svg"
+                alt="дата изменения"
+              />
+              <span class="repository__date-text">{{
+                repository.updatedAt | date: 'dd.MM.yyyy'
+              }}</span>
+            </div>
+            <div
+              class="repository__date"
+              matTooltip="Дата создания"
+              matTooltipPosition="above"
+              matTooltipClass="tooltip"
+            >
+              <img
+                class="repository__date-img"
+                src="assets/svg/dateCreate.svg"
+                alt="дата создания"
+              />
+              <span class="repository__date-text">{{
+                repository.createdAt | date: 'dd.MM.yyyy'
+              }}</span>
+            </div>
+          </div>
+          <div class="repository__actions" *ngIf="withFavorite">
+            <button
+              class="repository__action"
+              (click)="onRemoveRepository($event, repository._id)"
+              matTooltip="Удалить из избранного"
+              matTooltipPosition="above"
+              matTooltipClass="tooltip"
+            >
+              <img src="assets/svg/favorite_fill.svg" alt="удалить из избранного" />
+            </button>
+          </div>
+        </div>
+        <div class="repository__author">
+          <!-- <a
+              [routerLink]="'user-page/'"
+              routerLinkActive="active"
+              style="cursor: pointer;"
+            > -->
+          <img
+            class="repository__author-avatar"
+            appImageSanitized
+            [imagePath]="repository.author.avatar || ''"
+            [defaultImage]="'assets/svg/avatar.svg'"
+            [alt]="'аватар ' + repository.author.login"
+          />
+          <!-- </a> -->
+          <!-- <span class="repository__author-text">{{ repository.author.login }}</span> -->
+          <span class="repository__author-text">
+            <a
+              [routerLink]="'user-repositories'"
+              routerLinkActive="active"
+              style="cursor: pointer;"
+            >
+              {{ repository.author.login }}
+            </a>
+          </span>
+          <span
+            class="repository__author-text"
+            *ngIf="repository.author.firstName && repository.author.lastName"
+            >{{ getAuthorLastFirsName(repository.author) }}</span
+          >
+        </div>
+        <div class="repository__author" *ngIf="repository.team">
+          <img
+            class="repository__author-avatar"
+            appImageSanitized
+            [imagePath]="repository.team.avatar || ''"
+            [defaultImage]="'assets/svg/team.svg'"
+            [alt]="'аватар ' + repository.team.title"
+          />
+          <span class="repository__author-text">{{ repository.team.title }}</span>
+        </div>
+        <div class="repository__description">
+          {{ repository.description }}
+        </div>
+      </div>
+    </a>
+  </div>
+</div>

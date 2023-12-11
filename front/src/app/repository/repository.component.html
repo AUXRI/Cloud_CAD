@@ -1,0 +1,168 @@
+<div class="repository" *ngIf="hasAccess">
+  <div class="repository__header">
+    <div class="repository__header-column">
+      <div class="repository__title-wrapper">
+        <img
+          class="repository__type"
+          [src]="
+            repository.type === getRepositoryTypeEnum().Public
+              ? 'assets/svg/publicRepository.svg'
+              : 'assets/svg/privateRepository.svg'
+          "
+          [alt]="repository.type === getRepositoryTypeEnum().Public ? 'Публичный' : 'Приватный'"
+          [matTooltip]="
+            repository.type === getRepositoryTypeEnum().Public
+              ? 'Публичный репозиторий'
+              : 'Приватный репозиторий'
+          "
+          matTooltipPosition="above"
+          matTooltipClass="tooltip"
+        />
+        <h2 class="repository__title">{{ repository.title }}</h2>
+      </div>
+      <div class="repository__authors">
+        <div class="repository__author">
+          <img
+            class="repository__author-avatar"
+            appImageSanitized
+            [imagePath]="repository.author.avatar || ''"
+            [defaultImage]="'assets/svg/avatar.svg'"
+            [alt]="'аватар ' + repository.author.login"
+          />
+          <span class="repository__author-text">{{ repository.author.login }}</span>
+          <span
+            class="repository__author-text"
+            *ngIf="repository.author.firstName && repository.author.lastName"
+            >{{ getAuthorLastFirsName(repository.author) }}</span
+          >
+        </div>
+        <div class="repository__author" *ngIf="repository.team">
+          <a class="repository__author-link" [routerLink]="'/team/' + repository.team._id">
+            <img
+              class="repository__author-avatar"
+              appImageSanitized
+              [imagePath]="repository.team.avatar || ''"
+              [defaultImage]="'assets/svg/team.svg'"
+              [alt]="'аватар ' + repository.team.title"
+            />
+            <span class="repository__author-text">{{ repository.team.title }}</span>
+          </a>
+        </div>
+      </div>
+      <div class="repository__dates">
+        <div
+          class="repository__date"
+          matTooltip="Дата изменения"
+          matTooltipPosition="above"
+          matTooltipClass="tooltip"
+        >
+          <img class="repository__date-img" src="assets/svg/dateEdit.svg" alt="дата изменения" />
+          <span class="repository__date-text">{{ repository.updatedAt | date: 'dd.MM.yyyy' }}</span>
+        </div>
+        <div
+          class="repository__date"
+          matTooltip="Дата создания"
+          matTooltipPosition="above"
+          matTooltipClass="tooltip"
+        >
+          <img class="repository__date-img" src="assets/svg/dateCreate.svg" alt="дата создания" />
+          <span class="repository__date-text">{{ repository.createdAt | date: 'dd.MM.yyyy' }}</span>
+        </div>
+      </div>
+    </div>
+    <div class="repository__header-column" *ngIf="user">
+      <div class="repository__actions">
+        <button
+          class="repository__action"
+          mat-flat-button
+          [color]="isInFavorite ? 'accent' : 'primary'"
+          (click)="onToggleFavorite()"
+        >
+          {{ isInFavorite ? 'Удалить из избранного' : 'Добавить в избранное' }}
+        </button>
+      </div>
+      <div
+        class="repository__actions"
+        *appHasRole="
+          [getParticipantRoleEnum().Author, getParticipantRoleEnum().Editor];
+          userId: user._id;
+          participants: getRepositoryParticipants()
+        "
+      >
+        <button
+          class="repository__action"
+          mat-icon-button
+          matTooltip="Редактировать"
+          matTooltipPosition="above"
+          matTooltipClass="tooltip"
+        >
+          <img
+            class="repository__action-icon"
+            src="assets/svg/edit_blue.svg"
+            alt="Редактировать"
+            (click)="onEdit()"
+          />
+        </button>
+        <button
+          class="repository__action"
+          mat-icon-button
+          matTooltip="Удалить"
+          matTooltipPosition="above"
+          matTooltipClass="tooltip"
+        >
+          <img
+            class="repository__action-icon"
+            src="assets/svg/delete.svg"
+            alt="Удалить"
+            (click)="onDelete()"
+          />
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="repository__tabs">
+    <a
+      class="repository__tab"
+      [routerLink]="'/repository/' + repository._id"
+      routerLinkActive="repository__tab_active"
+      [routerLinkActiveOptions]="{ exact: true }"
+      >Описание</a
+    >
+    <a
+      class="repository__tab"
+      [routerLink]="'/repository/' + repository._id + '/instructions'"
+      routerLinkActive="repository__tab_active"
+      *ngIf="repository.instructions.length"
+      >Инструкции</a
+    >
+    <a
+      class="repository__tab"
+      [routerLink]="'/repository/' + repository._id + '/tree'"
+      routerLinkActive="repository__tab_active"
+      *ngIf="repository.modelTree"
+      >Дерево</a
+    >
+  </div>
+  <div class="repository__content">
+    <div class="loader" *ngIf="repository.models.length && !viewerInitialized">
+      <mat-spinner></mat-spinner>
+    </div>
+    <div class="viewer" *ngIf="repository.models.length; else emptyModels">
+      <app-scene
+        [repositoryId]="repository._id"
+        [modelId]="repository.models[repository.models.length - 1]._id"
+        [viewMode]="true"
+        [initialSettings]="repository.sceneSettings"
+        (viewerIsReady)="viewerIsReady()"
+      ></app-scene>
+    </div>
+    <div class="content">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</div>
+<ng-template #emptyModels>
+  <div class="empty-models">
+    <p class="empty-models__text">Модель не была добавлена</p>
+  </div>
+</ng-template>

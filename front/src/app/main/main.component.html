@@ -1,0 +1,21 @@
+<div class="main-page">
+  <app-sidenav
+    [user]="user"
+    [selectedAccount]="selectedAccount"
+    [userTeams]="userTeams"
+    [repositories]="accountRepositories"
+    (selecAccount)="onSelectAccount($event)"
+    *ngIf="user"
+  ></app-sidenav>
+  <div class="main-page__repositories">
+    <ng-container *ngIf="repositories.length; else noRepositories">
+      <app-repositories-page
+        [repositories]="repositories"
+        [title]="'Публичные репозитории'"
+      ></app-repositories-page>
+    </ng-container>
+    <ng-template #noRepositories>
+      <app-page-status [text]="'По данному запросу репозиториев не найдено'"></app-page-status>
+    </ng-template>
+  </div>
+</div>

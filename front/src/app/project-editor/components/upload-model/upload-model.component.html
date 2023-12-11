@@ -1,0 +1,14 @@
+<div class="upload-model">
+  <div class="upload-model__drop-area" appDnd (fileDropped)="onFileDropped($event)">
+    <input
+      class="upload-model__input"
+      type="file"
+      #fileDropRef
+      id="fileDropRef"
+      accept=".stp, .step, .igs, .iges, .gltf"
+      (change)="onFileChanged($event)"
+    />
+    <img class="upload-model__image" src="assets/svg/uploadModel.svg" alt="Загрузить модель" />
+    <label class="upload-model__label" for="fileDropRef">Выберите или перетащите файл</label>
+  </div>
+</div>

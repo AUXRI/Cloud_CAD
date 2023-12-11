@@ -1,0 +1,13 @@
+<div class="repositories-page">
+  <div class="repositories-page__container">
+    <h1 class="repositories-page__title page-title">{{ title }}</h1>
+    <div class="repositories-page__repositories">
+      <app-repositories
+        [repositories]="repositories"
+        [withFavorite]="withFavorite"
+        (removeFromFavorite)="removeFromFavorite.emit($event)"
+      >
+      </app-repositories>
+    </div>
+  </div>
+</div>

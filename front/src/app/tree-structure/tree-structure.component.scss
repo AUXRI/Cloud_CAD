@@ -1,0 +1,62 @@
+@import '_variables';
+
+:host {
+  height: 100%;
+}
+
+.tree-wrapper {
+  height: 100%;
+
+  &__button {
+    margin-left: 2px;
+  }
+}
+
+.tree {
+  &_invisible {
+    display: none;
+  }
+
+  ul,
+  li {
+    margin-top: 0;
+    margin-bottom: 0;
+    list-style-type: none;
+  }
+
+  .mat-nested-tree-node div[role='group'] {
+    padding-left: 40px;
+  }
+
+  div[role='group'] > .mat-tree-node {
+    padding-left: 40px;
+  }
+
+  &__node {
+    display: flex;
+    align-items: center;
+    flex: 1;
+  }
+
+  &__node-name {
+    cursor: pointer;
+  }
+}
+
+.highlight {
+  animation: backgroundColorAnimation 3s ease-in-out;
+}
+
+@keyframes backgroundColorAnimation {
+  0% {
+    background-color: #ffca80;
+  }
+
+  75% {
+    background-color: #ffca80;
+  }
+
+  100% {
+    background-color: transparent;
+  }
+}

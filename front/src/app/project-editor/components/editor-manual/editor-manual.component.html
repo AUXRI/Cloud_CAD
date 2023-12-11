@@ -1,0 +1,82 @@
+<div class="editor-manual">
+  <button class="editor-manual__btn" mat-raised-button color="primary" type="button">
+    Добавить анимацию
+  </button>
+  <mat-form-field class="editor-manual__select" appearance="fill">
+    <mat-select [(value)]="selectedAnimation" (selectionChange)="changeAnimation($event)">
+      <mat-option [value]="i" *ngFor="let animation of animations; let i = index">{{
+        animation.name
+      }}</mat-option>
+    </mat-select>
+  </mat-form-field>
+  <div class="editor-manual__timeline-wrapper">
+    <div class="editor-manual__wrapper-buttons">
+      <button mat-icon-button matTooltip="Продолжить">
+        <img class="editor-manual__btn-icon" src="assets/svg/playAnimation.svg" alt="продолжить" />
+      </button>
+      <button
+        mat-icon-button
+        matTooltip="Пауза"
+        matTooltipPosition="above"
+        matTooltipClass="tooltip"
+      >
+        <img class="editor-manual__btn-icon" src="assets/svg/pauseAnimation.svg" alt="пауза" />
+      </button>
+    </div>
+    <mat-slider
+      class="editor-manual__slider"
+      color="primary"
+      [min]="0"
+      [max]="maxDuration"
+      [value]="curSecondsOnTimeline"
+      (input)="changeTime($event)"
+    ></mat-slider>
+    <span>{{ output }}</span>
+  </div>
+  <div class="editor-manual__control-time">
+    <div class="editor-manual__wrapper-input">
+      <p class="editor-manual__title-input">Начало</p>
+      <input class="editor-manual__input" />
+    </div>
+    <div class="editor-manual__wrapper-input">
+      <p class="editor-manual__title-input">Конец</p>
+      <input class="editor-manual__input" />
+    </div>
+  </div>
+  <textarea class="editor-manual__textarea"></textarea>
+  <div class="editor-manual__table-wrapper">
+    <table class="editor-manual__table">
+      <thead>
+        <tr class="editor-manual__row">
+          <th class="editor-manual__column editor-manual__column-time">Начало</th>
+          <th class="editor-manual__column editor-manual__column-time">Конец</th>
+          <th class="editor-manual__column editor-manual__column-action">Действия</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="item">
+          <td class="editor-manual__column editor-manual__column-time">0:00</td>
+          <td class="editor-manual__column editor-manual__column-time">0:05</td>
+          <td class="editor-manual__column editor-manual__column-action">
+            <button
+              mat-icon-button
+              matTooltip="Редактировать руководство"
+              matTooltipPosition="above"
+              matTooltipClass="tooltip"
+            >
+              <img class="editor-manual__btn-icon" src="assets/svg/edit.svg" alt="редактировать" />
+            </button>
+            <button
+              mat-icon-button
+              matTooltip="Удалить руководство"
+              matTooltipPosition="above"
+              matTooltipClass="tooltip"
+            >
+              <img class="editor-manual__btn-icon" src="assets/svg/delete.svg" alt="удалить" />
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

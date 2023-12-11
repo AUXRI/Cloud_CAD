@@ -1,0 +1,84 @@
+:host {
+  flex: 1;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.editor-viewer {
+  flex: 1;
+  height: 100%;
+  position: relative;
+  display: flex;
+
+  &__viewer {
+    flex: 1 1 auto;
+    border: 1px solid #d3d3d3;
+    border-radius: 12px;
+  }
+
+  &__toolbar {
+  }
+}
+
+.toolbar {
+  display: flex;
+  flex-direction: column;
+  width: 565px;
+  height: 100%;
+  margin-left: 20px;
+  border: 1px solid #d3d3d3;
+  border-radius: 12px;
+
+  &__tabs {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    overflow: auto;
+  }
+
+  &__tab {
+  }
+
+  &__content {
+    height: 100%;
+  }
+
+  &__wrapper-step-buttons {
+    padding: 0 16px;
+    margin-bottom: 20px;
+  }
+}
+
+:host ::ng-deep .mat-tab-label {
+  padding: 0 20px;
+  min-width: auto;
+  flex-grow: 1;
+  user-select: none;
+
+  &:first-child {
+    border-radius: 12px 0 0 0;
+  }
+
+  &:last-child {
+    border-radius: 0 12px 0 0;
+  }
+}
+
+:host ::ng-deep .mat-tab-label-active {
+  opacity: 1;
+}
+
+::ng-deep .mat-tab-group {
+  display: flex;
+  flex-direction: column;
+  max-width: 100%;
+  flex: 1;
+  overflow: auto;
+}
+
+::ng-deep .mat-tab-body-wrapper {
+  flex-grow: 1;
+}

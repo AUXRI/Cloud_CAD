@@ -1,0 +1,11 @@
+<ng-container *ngIf="repositories.length; else noRepositories">
+  <app-repositories-page
+    [title]="'Избранное'"
+    [repositories]="repositories"
+    [withFavorite]="true"
+    (removeFromFavorite)="onRemoveFromFavorite($event)"
+  ></app-repositories-page>
+</ng-container>
+<ng-template #noRepositories>
+  <app-page-status [text]="'Нет репозиториев, добавленных в избранное'"></app-page-status>
+</ng-template>

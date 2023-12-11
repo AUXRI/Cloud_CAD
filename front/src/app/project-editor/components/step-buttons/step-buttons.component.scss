@@ -1,0 +1,18 @@
+@import '_variables';
+
+.change-step {
+  display: flex;
+  justify-content: space-between;
+  padding-top: 30px;
+
+  &_align-end {
+    justify-content: flex-end;
+  }
+
+  &__btn {
+    &_back {
+      border: none;
+      color: $btnBackStepBgColor;
+    }
+  }
+}
